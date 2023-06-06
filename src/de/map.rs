@@ -1,3 +1,5 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+
 use crate::de::{Deserializer, Error};
 use serde::de::{self, Visitor};
 

@@ -1,4 +1,8 @@
 //! Deserialize JSON data to a Rust data structure
+#![cfg_attr(not(feature = "std"), no_std)]
+
+#[cfg(not(feature = "std"))]
+extern crate alloc;
 
 mod enum_;
 mod errors;
@@ -15,6 +19,9 @@ use self::map::MapAccess;
 use self::seq::SeqAccess;
 //use std::str::from_utf8;
 use core::str::from_utf8;
+
+#[cfg(not(feature = "std"))]
+use alloc::{string::String};
 
 /// Deserializer will parse serde-json-wasm flavored JSON into a
 /// serde-annotated struct

@@ -1,4 +1,14 @@
 //use std::convert::TryFrom;
+#![cfg_attr(not(feature = "std"), no_std)]
+
+#[cfg(not(feature = "std"))]
+pub extern crate alloc;
+
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
+
+#[cfg(not(feature = "std"))]
+use alloc::{string::String};
 
 use super::errors::{Error, Result};
 

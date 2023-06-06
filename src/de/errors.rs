@@ -1,3 +1,5 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+
 use serde::de;
 #[cfg(not(feature = "std"))]
 extern crate alloc;
@@ -5,6 +7,12 @@ extern crate alloc;
 //use std::{error, fmt};
 #[cfg(not(feature = "std"))]
 use alloc::fmt::Formatter;
+
+#[cfg(not(feature = "std"))]
+use alloc::{string::String};
+
+#[cfg(not(feature = "std"))]
+use crate::ser::alloc::string::ToString;
 
 /// Deserialization result
 pub type Result<T> = core::result::Result<T, Error>;

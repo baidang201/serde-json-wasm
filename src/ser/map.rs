@@ -1,4 +1,14 @@
 // use std::fmt;
+#![cfg_attr(not(feature = "std"), no_std)]
+
+#[cfg(not(feature = "std"))]
+pub extern crate alloc;
+
+#[cfg(not(feature = "std"))]
+use alloc::{format};
+
+#[cfg(not(feature = "std"))]
+use crate::ser::alloc::string::ToString;
 
 use serde::{ser, Serialize};
 
@@ -55,7 +65,7 @@ struct MapKeySerializer<'a> {
 }
 
 pub(crate) fn key_must_be_a_string() -> Error {
-    Error::Custom("JSON object key is required to be a string type.".to_string())
+    Error::Custom(format!("JSON object key is required to be a string type."))
 }
 
 macro_rules! serialize_unsigned_key {
@@ -166,7 +176,7 @@ impl<'a> ser::Serializer for MapKeySerializer<'a> {
     }
 
     fn serialize_char(self, value: char) -> Result<()> {
-        self.ser.serialize_str(&value.to_string())
+        self.ser.serialize_str( &value.to_string())
     }
 
     fn serialize_bytes(self, _value: &[u8]) -> Result<()> {

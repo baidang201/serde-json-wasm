@@ -1,12 +1,19 @@
 //! Serialize a Rust data structure into JSON data
+#![cfg_attr(not(feature = "std"), no_std)]
+
 #[cfg(not(feature = "std"))]
-extern crate alloc;
+pub extern crate alloc;
 
-
+#[cfg(not(feature = "std"))]
+use crate::ser::alloc::string::ToString;
 
 //use std::{error, fmt};
 #[cfg(not(feature = "std"))]
 use alloc::fmt::Formatter;
+
+
+#[cfg(not(feature = "std"))]
+use alloc::{string::String};
 
 use serde::ser;
 
