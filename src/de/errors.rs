@@ -1,5 +1,10 @@
 use serde::de;
-use std::{error, fmt};
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
+//use std::{error, fmt};
+#[cfg(not(feature = "std"))]
+use alloc::fmt::Formatter;
 
 /// Deserialization result
 pub type Result<T> = core::result::Result<T, Error>;
@@ -72,68 +77,74 @@ pub enum Error {
     Custom(String),
 }
 
-impl error::Error for Error {
-    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-        None
-    }
+// impl error::Error for Error {
+//     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+//         None
+//     }
 
-    fn description(&self) -> &str {
-        "(use display)"
-    }
-}
+//     fn description(&self) -> &str {
+//         "(use display)"
+//     }
+// }
 
 impl de::Error for Error {
     fn custom<T>(msg: T) -> Self
     where
-        T: fmt::Display,
+        T: core::fmt::Display,
     {
         Error::Custom(msg.to_string())
     }
 }
 
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                Error::ControlCharacterInString => "Control character found in string.",
-                Error::EofWhileParsingList => "EOF while parsing a list.",
-                Error::EofWhileParsingObject => "EOF while parsing an object.",
-                Error::EofWhileParsingString => "EOF while parsing a string.",
-                Error::EofWhileParsingValue => "EOF while parsing a JSON value.",
-                Error::ExpectedColon => "Expected this character to be a `':'`.",
-                Error::ExpectedHighSurrogate => "Expected a high surrogate (D800–DBFF).",
-                Error::ExpectedListCommaOrEnd => {
-                    "Expected this character to be either a `','` or\
-                     a \
-                     `']'`."
-                }
-                Error::ExpectedLowSurrogate => "Expected a low surrogate (DC00–DFFF).",
-                Error::ExpectedObjectCommaOrEnd => {
-                    "Expected this character to be either a `','` \
-                     or a \
-                     `'}'`."
-                }
-                Error::ExpectedSomeIdent => {
-                    "Expected to parse either a `true`, `false`, or a \
-                     `null`."
-                }
-                Error::ExpectedSomeValue => "Expected this character to start a JSON value.",
-                Error::InvalidEscape => "Invalid escape sequence.",
-                Error::InvalidNumber => "Invalid number.",
-                Error::InvalidType => "Invalid type",
-                Error::InvalidUnicodeCodePoint => "Invalid unicode code point.",
-                Error::KeyMustBeAString => "Object key is not a string.",
-                Error::LoneSurrogateFound => "Found a lone surrogate, which can exist in JSON but cannot be encoded to UTF-8.",
-                Error::TrailingCharacters => {
-                    "JSON has non-whitespace trailing characters after \
-                     the \
-                     value."
-                }
-                Error::TrailingComma => "JSON has a comma after the last value in an array or map.",
-                Error::Custom(msg) => msg,
-            }
-        )
+// impl fmt::Display for Error {
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         write!(
+//             f,
+//             "{}",
+//             match self {
+//                 Error::ControlCharacterInString => "Control character found in string.",
+//                 Error::EofWhileParsingList => "EOF while parsing a list.",
+//                 Error::EofWhileParsingObject => "EOF while parsing an object.",
+//                 Error::EofWhileParsingString => "EOF while parsing a string.",
+//                 Error::EofWhileParsingValue => "EOF while parsing a JSON value.",
+//                 Error::ExpectedColon => "Expected this character to be a `':'`.",
+//                 Error::ExpectedHighSurrogate => "Expected a high surrogate (D800–DBFF).",
+//                 Error::ExpectedListCommaOrEnd => {
+//                     "Expected this character to be either a `','` or\
+//                      a \
+//                      `']'`."
+//                 }
+//                 Error::ExpectedLowSurrogate => "Expected a low surrogate (DC00–DFFF).",
+//                 Error::ExpectedObjectCommaOrEnd => {
+//                     "Expected this character to be either a `','` \
+//                      or a \
+//                      `'}'`."
+//                 }
+//                 Error::ExpectedSomeIdent => {
+//                     "Expected to parse either a `true`, `false`, or a \
+//                      `null`."
+//                 }
+//                 Error::ExpectedSomeValue => "Expected this character to start a JSON value.",
+//                 Error::InvalidEscape => "Invalid escape sequence.",
+//                 Error::InvalidNumber => "Invalid number.",
+//                 Error::InvalidType => "Invalid type",
+//                 Error::InvalidUnicodeCodePoint => "Invalid unicode code point.",
+//                 Error::KeyMustBeAString => "Object key is not a string.",
+//                 Error::LoneSurrogateFound => "Found a lone surrogate, which can exist in JSON but cannot be encoded to UTF-8.",
+//                 Error::TrailingCharacters => {
+//                     "JSON has non-whitespace trailing characters after \
+//                      the \
+//                      value."
+//                 }
+//                 Error::TrailingComma => "JSON has a comma after the last value in an array or map.",
+//                 Error::Custom(msg) => msg,
+//             }
+//         )
+//     }
+// }
+#[cfg(not(feature = "std"))]
+impl core::fmt::Display for Error {
+    fn fmt(&self, _f: &mut Formatter<'_>) -> core::fmt::Result {
+        Ok(())
     }
 }

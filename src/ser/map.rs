@@ -1,4 +1,4 @@
-use std::fmt;
+// use std::fmt;
 
 use serde::{ser, Serialize};
 
@@ -251,7 +251,7 @@ impl<'a> ser::Serializer for MapKeySerializer<'a> {
 
     fn collect_str<T>(self, _value: &T) -> Result<()>
     where
-        T: ?Sized + fmt::Display,
+        T: ?Sized + core::fmt::Display,
     {
         unreachable!()
     }

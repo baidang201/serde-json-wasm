@@ -13,7 +13,8 @@ use serde::de::{self, Visitor};
 use self::enum_::{StructVariantAccess, UnitVariantAccess};
 use self::map::MapAccess;
 use self::seq::SeqAccess;
-use std::str::from_utf8;
+//use std::str::from_utf8;
+use core::str::from_utf8;
 
 /// Deserializer will parse serde-json-wasm flavored JSON into a
 /// serde-annotated struct

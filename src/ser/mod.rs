@@ -1,10 +1,18 @@
 //! Serialize a Rust data structure into JSON data
+#[cfg(not(feature = "std"))]
+extern crate alloc;
 
-use std::{error, fmt};
+
+
+//use std::{error, fmt};
+#[cfg(not(feature = "std"))]
+use alloc::fmt::Formatter;
 
 use serde::ser;
 
-use std::vec::Vec;
+//use std::vec::Vec;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 use self::map::SerializeMap;
 use self::seq::SerializeSeq;
@@ -40,22 +48,29 @@ impl From<u8> for Error {
     }
 }
 
-impl error::Error for Error {
-    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-        None
-    }
+// impl error::Error for Error {
+//     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+//         None
+//     }
 
-    fn description(&self) -> &str {
-        "(use display)"
-    }
-}
+//     fn description(&self) -> &str {
+//         "(use display)"
+//     }
+// }
 
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Error::BufferFull => write!(f, "Buffer is full"),
-            Error::Custom(msg) => write!(f, "{}", &msg),
-        }
+// impl fmt::Display for Error {
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         match self {
+//             Error::BufferFull => write!(f, "Buffer is full"),
+//             Error::Custom(msg) => write!(f, "{}", &msg),
+//         }
+//     }
+// }
+
+#[cfg(not(feature = "std"))]
+impl core::fmt::Display for Error {
+    fn fmt(&self, _f: &mut Formatter<'_>) -> core::fmt::Result {
+        Ok(())
     }
 }
 
@@ -453,7 +468,7 @@ where
 impl ser::Error for Error {
     fn custom<T>(msg: T) -> Self
     where
-        T: fmt::Display,
+        T: core::fmt::Display,
     {
         Error::Custom(msg.to_string())
     }
